@@ -1,0 +1,40 @@
+## 3 Tier App Deployment ## Frontend(Angular), Api(Java) and Backend as MongoDB##
+
+
+version: '2'
+services:
+  fe:
+    image: kammana/emp-fe-comp:1.0
+    container_name: emp-fe
+    ports:
+     - "4200:4200"
+    networks:
+     -javahome-app
+  mongodb:
+    container_name: mongodb
+    image: "mongo:latest"
+    networks:
+      - javahome-app
+    volumes:
+      - mongodb:/data/db
+  emp-api:
+    container_name: empapi
+    image: kammana/boot-api:5.0
+    ports:
+     - "8080:8080"
+    networks:
+     - javahome-app
+ volumes: 
+   mongodb:
+ networks: 
+   javahome-app:
+     driver: bridge   
+     
+     
+- If testing team wants to setup this multi tier Application they have to download this file into their local machine using 
+the command wget docker compose file,followed by docker-compose up -d, this will bring up all the micro services present in 
+compose file and -d will run all apps in back ground
+- kammana_javahome-app will create the network and communication bridge between multiple containers.
+- goto browser with localhost:4200 this will load the application java home as front end and when we insert data into it api
+will communicate with database and data will persist in DB. 
+  
